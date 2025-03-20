@@ -74,7 +74,7 @@ background-image: linear-gradient(
 
 .new-item-form input:focus {
     outline: none;
-    border-color: var(--text-color); /* Optional: Keep the border color as it was before focus */
+    border-color: var(--text-color); 
 }
 
 
