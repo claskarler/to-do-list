@@ -4,6 +4,9 @@ import ListItem from './ListItem.vue'
 import Confetti from './Confetti.vue'
 
 const listItems = ref([])
+const listSettings = ref([{
+  confettiEnabled: true
+}])
 const showItemForm = ref(0)
 const newItem = ref('')
 const allComplete = ref(false)
@@ -14,6 +17,10 @@ function addListItem() {
     newItem.value = ''
     showItemForm.value = false
   }
+}
+
+function clearList() {
+  listItems.value = []
 }
 
 watch(
@@ -35,7 +42,7 @@ function toggleDone(index) {
 
 <template>
   <div class="app-container h-100">
-    <Confetti v-if="allComplete" />
+    <Confetti v-if="allComplete && listSettings[0].confettiEnabled" />
     <div class="d-flex justify-content-center align-items-center py-3">
       <div class="d-flex justify-content-between list-title bg-white p-3">
         <i class="bi bi-star"></i>
@@ -44,6 +51,12 @@ function toggleDone(index) {
       </div>
     </div>
     <div class="to-do-list-container bg-white mx-3 d-flex flex-column">
+      <div class="list-top">
+        <button class="list-top-btn me-1" data-bs-toggle="modal" data-bs-target="#settingsModal">
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+        <button class="list-top-btn" @click="clearList"><i class="bi bi-trash"></i></button>
+      </div>
       <ul class="d-flex flex-column list-unstyled">
         <ListItem
           v-for="(item, index) in listItems"
@@ -63,4 +76,28 @@ function toggleDone(index) {
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content modal-custom">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="settingseModalLabel">List settings</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <label class="switch me-2">
+          <input v-model="listSettings[0].confettiEnabled" type="checkbox">
+          <span class="slider"></span>
+        </label>
+          <p>Confetti on completed list</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-bs-dismiss="modal">Close</button>
+        <button type="button" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
